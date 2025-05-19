@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        <h:outputText value="Veículo" />
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="frmList">
+            <p:growl id="growl" showDetail="true" />
+            <p:fieldset toggleable="true">
+
+                <p:dataTable id="datalist"
+                             value="#{veiculoController.veiculos}"
+                             var="item"
+                             selectionMode="single"
+                             selection="#{veiculoController.veiculo}"
+                             widgetVar="datalistVeiculoWidgetVar"
+                             rowKey="#{item.id}"
+                             paginator="true"
+                             rows="5"
+                             rowsPerPageTemplate="5,10,50,100"
+                             emptyMessage="Nenhum veículo cadastrado...">
+
+                    <p:ajax event="rowSelect" update="btnEdit btnDelete btnView"/>
+                    <p:ajax event="rowUnselect" update="btnEdit btnDelete btnView"/>
+
+                    <p:column sortBy="#{item.id}" filterBy="#{item.id}">
+                        <f:facet name="header">ID</f:facet>
+                        <h:outputText value="#{item.id}" />
+                    </p:column>
+
+                    <p:column sortBy="#{item.marca}" filterBy="#{item.marca}">
+                        <f:facet name="header">Marca</f:facet>
+                        <h:outputText value="#{item.marca}" />
+                    </p:column>
+
+                    <p:column sortBy="#{item.modelo}" filterBy="#{item.modelo}">
+                        <f:facet name="header">Modelo</f:facet>
+                        <h:outputText value="#{item.modelo}" />
+                    </p:column>
+
+                    <p:column sortBy="#{item.placa}" filterBy="#{item.placa}">
+                        <f:facet name="header">Placa</f:facet>
+                        <h:outputText value="#{item.placa}" />
+                    </p:column>
+
+                    <p:column sortBy="#{item.disponivel}" filterBy="#{item.disponivel}">
+                        <f:facet name="header">Disponível</f:facet>
+                        <h:outputText value="#{item.disponivel ? 'Sim' : 'Não'}" />
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <p:commandButton id="btnCreate" value="Incluir Veículo" icon="pi pi-file"
+                                         actionListener="#{veiculoController.novo()}"
+                                         update=":CreateForm"
+                                         onclick="PF('dlgCreate').show()"
+                                         style="margin-right:5px;" />
+
+                        <p:commandButton id="btnEdit" icon="pi pi-pencil" value="Editar Veículo"
+                                         update="formEdit" oncomplete="PF('dlgEdit').show()"
+                                         disabled="#{empty veiculoController.veiculo}"
+                                         style="margin-right:5px;" />
+
+                        <p:commandButton id="btnDelete" icon="pi pi-trash" value="Excluir Veículo"
+                                         actionListener="#{veiculoController.excluir(veiculoController.veiculo)}"
+                                         update="frmList"
+                                         disabled="#{empty veiculoController.veiculo}"
+                                         style="margin-right:5px;">
+                            <p:confirm header="Confirmar Exclusão"
+                                       message="Deseja realmente excluir o veículo?"
+                                       icon="ui-icon-alert" />
+                        </p:commandButton>
+
+                        <p:commandButton id="btnView" icon="pi pi-search" value="Detalhes do Veículo"
+                                         actionListener="#{veiculoController.atualizarDetalhes()}"
+                                         update="formView"
+                                         oncomplete="PF('dlgView').show()" 
+                                         disabled="#{empty veiculoController.veiculo}" />
+                    </f:facet>
+
+
+                </p:dataTable>
+            </p:fieldset>
+
+            <!-- Confirmação de exclusão -->
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+            </p:confirmDialog>
+        </h:form>
+
+        <!-- Diálogo de Inclusão -->
+        <p:dialog header="Novo Veículo" widgetVar="dlgCreate" height="300" width="500" modal="true">
+            <h:form id="CreateForm">
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="Marca:" for="marca" />
+                    <p:inputText id="marca" value="#{veiculoController.veiculo.marca}" required="true" />
+
+                    <p:outputLabel value="Modelo:" for="modelo" />
+                    <p:inputText id="modelo" value="#{veiculoController.veiculo.modelo}" required="true" />
+
+                    <p:outputLabel value="Placa:" for="placa" />
+                    <p:inputText id="placa" value="#{veiculoController.veiculo.placa}" required="true" />
+
+                    <p:outputLabel value="Disponível:" for="disponivel" />
+                    <p:selectBooleanCheckbox id="disponivel" value="#{veiculoController.veiculo.disponivel}" />
+                </h:panelGrid>
+
+                <p:commandButton value="Salvar" icon="pi pi-save"
+                                 actionListener="#{veiculoController.salvar}"
+                                 update=":frmList, CreateForm"
+                                 onclick="PF('dlgCreate').hide()" />
+            </h:form>
+        </p:dialog>
+
+        <!-- Diálogo de Edição -->
+        <p:dialog header="Editar Veículo" widgetVar="dlgEdit" height="300" width="500" modal="true">
+            <h:form id="formEdit">
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="ID:" for="id" />
+                    <p:inputText id="id" value="#{veiculoController.veiculo.id}" disabled="true" />
+
+                    <p:outputLabel value="Marca:" for="marca" />
+                    <p:inputText id="marca" value="#{veiculoController.veiculo.marca}" required="true" />
+
+                    <p:outputLabel value="Modelo:" for="modelo" />
+                    <p:inputText id="modelo" value="#{veiculoController.veiculo.modelo}" required="true" />
+
+                    <p:outputLabel value="Placa:" for="placa" />
+                    <p:inputText id="placa" value="#{veiculoController.veiculo.placa}" required="true" />
+
+                    <p:outputLabel value="Disponível:" for="disponivel" />
+                    <p:selectBooleanCheckbox id="disponivel" value="#{veiculoController.veiculo.disponivel}" />
+                </h:panelGrid>
+
+                <p:commandButton value="Salvar" icon="pi pi-save"
+                                 actionListener="#{veiculoController.salvar}"
+                                 update=":frmList, formEdit"
+                                 onclick="PF('dlgEdit').hide()" />
+            </h:form>
+        </p:dialog>
+
+        <!-- Diálogo de Visualização -->
+        <p:dialog header="Detalhes do Veículo" widgetVar="dlgView" height="250" width="500" modal="true">
+            <h:form id="formView">
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="ID:" />
+                    <p:outputLabel value="#{veiculoController.veiculo.id}" />
+
+                    <p:outputLabel value="Marca:" />
+                    <p:outputLabel value="#{veiculoController.veiculo.marca}" />
+
+                    <p:outputLabel value="Modelo:" />
+                    <p:outputLabel value="#{veiculoController.veiculo.modelo}" />
+
+                    <p:outputLabel value="Placa:" />
+                    <p:outputLabel value="#{veiculoController.veiculo.placa}" />
+
+                    <p:outputLabel value="Disponível:" />
+                    <p:outputLabel value="#{veiculoController.veiculo.disponivel ? 'Sim' : 'Não'}" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
+</ui:composition>
