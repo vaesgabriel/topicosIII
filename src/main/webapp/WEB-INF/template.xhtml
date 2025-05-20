@@ -23,6 +23,10 @@
 <h:body>
 
     <div class="layout-wrapper layout-slim layout-light">
+
+        <!-- Sidebar corretamente posicionada -->
+        <ui:include src="./sidebar.xhtml"/>
+
         <div class="layout-main">
             <ui:include src="./topbar.xhtml"/>
 
@@ -36,9 +40,6 @@
 
         <ui:include src="./config.xhtml"/>
         <ui:include src="./rightpanel.xhtml"/>
-
-        <!-- Sidebar com o menu lateral -->
-        <ui:include src="./sidebar.xhtml"/>
     </div>
 
     <p:ajaxStatus style="width:32px;height:32px;position:fixed;right:7px;bottom:7px">
@@ -53,6 +54,6 @@
     <!-- Estilos do layout -->
     <h:outputStylesheet name="css/primeicons.css" library="manhattan-layout"/>
     <h:outputStylesheet name="css/primeflex.min.css" library="manhattan-layout"/>
-    <h:outputStylesheet name="css/layout-cyan-deeporange.css" library="manhattan-layout" />
+    <h:outputStylesheet name="css/layout-cyan-deeporange.css" library="manhattan-layout"/>
 </h:body>
 </html>

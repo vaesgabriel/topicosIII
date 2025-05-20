@@ -19,12 +19,13 @@ import java.util.List;
 @SessionScoped
 public class AgendamentoController implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     @EJB
     private AgendamentoFacade ejbFacade;
 
     private AgendamentoEntity agendamento = new AgendamentoEntity();
     private List<AgendamentoEntity> agendamentoList = new ArrayList<>();
-
     private AgendamentoEntity selected;
 
     public AgendamentoEntity getSelected() {
@@ -70,20 +71,11 @@ public class AgendamentoController implements Serializable {
         persist(PersistAction.DELETE, "Agendamento excluído com sucesso!");
     }
 
-    public static void addErrorMessage(String msg) {
-        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg);
-        FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-    }
-
-    public static void addSuccessMessage(String msg) {
-        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg);
-        FacesContext.getCurrentInstance().addMessage("successInfo", facesMsg);
-    }
-
-    public static enum PersistAction {
-        CREATE,
-        DELETE,
-        UPDATE
+    /**
+     * Busca agendamentos por ID do funcionário.
+     */
+    public List<AgendamentoEntity> buscarPorFuncionario(Integer funcionarioId) {
+        return ejbFacade.buscarPorFuncionarioId(funcionarioId);
     }
 
     private void persist(PersistAction persistAction, String successMessage) {
@@ -120,5 +112,21 @@ public class AgendamentoController implements Serializable {
         } catch (Exception ex) {
             addErrorMessage(ex.getLocalizedMessage());
         }
+    }
+
+    public static void addErrorMessage(String msg) {
+        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg);
+        FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+    }
+
+    public static void addSuccessMessage(String msg) {
+        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg);
+        FacesContext.getCurrentInstance().addMessage("successInfo", facesMsg);
+    }
+
+    public static enum PersistAction {
+        CREATE,
+        DELETE,
+        UPDATE
     }
 }

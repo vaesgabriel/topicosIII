@@ -1,0 +1,243 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        <h:outputText value="Funcionário"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="frmList">
+            <p:growl id="growl" showDetail="true" />
+            <h:panelGroup id="pngList">
+                <p:dataTable id="datalist" value="#{funcionarioController.funcionarioList}" var="item"
+                             selectionMode="single" selection="#{funcionarioController.selected}"
+                             widgetVar="datalistFuncionarioWidgetVar"
+                             rowKey="#{item.id}"
+                             paginator="true"
+                             rows="5"
+                             rowsPerPageTemplate="5,10,50,100"
+                             emptyMessage="Nenhum funcionário cadastrado...">
+
+                    <p:ajax event="rowSelect" update="btnEdit btnDelete btnView"/>
+                    <p:ajax event="rowUnselect" update="btnEdit btnDelete btnView"/>
+
+                    <p:column width="4%" sortBy="#{item.id}" filterBy="#{item.id}">
+                        <f:facet name="header"><h:outputText value="ID"/></f:facet>
+                        <h:outputText value="#{item.id}"/>
+                    </p:column>
+
+                    <p:column width="10%" sortBy="#{item.nome}" filterBy="#{item.nome}">
+                        <f:facet name="header"><h:outputText value="Nome"/></f:facet>
+                        <h:outputText value="#{item.nome}"/>
+                    </p:column>
+
+                    <p:column width="6%" sortBy="#{item.dataNascimento}" filterBy="#{item.dataNascimento}">
+                        <f:facet name="header"><h:outputText value="Nascimento"/></f:facet>
+                        <h:outputText value="#{item.dataNascimento}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column width="8%" sortBy="#{item.email}" filterBy="#{item.email}">
+                        <f:facet name="header"><h:outputText value="Email"/></f:facet>
+                        <h:outputText value="#{item.email}"/>
+                    </p:column>
+
+                    <p:column width="4%" sortBy="#{item.idade}" filterBy="#{item.idade}">
+                        <f:facet name="header"><h:outputText value="Idade"/></f:facet>
+                        <h:outputText value="#{item.idade}"/>
+                    </p:column>
+
+                    <p:column width="5%" sortBy="#{item.cidadania}" filterBy="#{item.cidadania}">
+                        <f:facet name="header"><h:outputText value="Cidadania"/></f:facet>
+                        <h:outputText value="#{item.cidadania}"/>
+                    </p:column>
+
+                    <p:column width="12%" sortBy="#{item.idCidade.nome}" filterBy="#{item.idCidade.nome}" filterMatchMode="contains">
+                        <f:facet name="header"><h:outputText value="Cidade"/></f:facet>
+                        <h:outputText value="#{item.idCidade.nome}"/>
+                    </p:column>
+
+                    <p:column width="8%" sortBy="#{item.observacao}" filterBy="#{item.observacao}">
+                        <f:facet name="header"><h:outputText value="Observação"/></f:facet>
+                        <h:outputText value="#{item.observacao}"/>
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <p:commandButton id="btnCreate" value="Incluir Funcionário" icon="pi pi-file"
+                                         action="#{funcionarioController.prepareAdicionar}"
+                                         update=":CreateForm"
+                                         oncomplete="PF('dlgCreate').show()"
+                                         styleClass="botao-verde"
+                                         style="margin-right: 8px;" />
+
+                        <p:commandButton id="btnEdit" value="Editar Funcionário" icon="pi pi-user-edit"
+                                         update="formEdit"
+                                         oncomplete="PF('dlgEdit').show()"
+                                         disabled="#{empty funcionarioController.selected}"
+                                         styleClass="botao-laranja"
+                                         style="margin-right: 8px;" />
+
+                        <p:commandButton id="btnDelete" value="Excluir Funcionário" icon="pi pi-trash"
+                                         actionListener="#{funcionarioController.deletarFuncionario}"
+                                         update=":frmList"
+                                         disabled="#{empty funcionarioController.selected}"
+                                         styleClass="botao-vermelho"
+                                         style="margin-right: 8px;">
+                            <p:confirm header="Confirmar Exclusão" message="Você confirma exclusão do registro?" icon="ui-icon-alert" />
+                        </p:commandButton>
+
+                        <p:commandButton id="btnView" value="Detalhes do Funcionário" icon="pi pi-eye"
+                                         update="formView"
+                                         oncomplete="PF('dlgView').show()"
+                                         disabled="#{empty funcionarioController.selected}"
+                                         styleClass="botao-azul"/>
+                    </f:facet>
+                </p:dataTable>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+                </p:confirmDialog>
+            </h:panelGroup>
+        </h:form>
+
+        <h:form>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes confirmar-vermelho" icon="pi pi-check" />
+                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no confirmar-verde" icon="pi pi-times" />
+            </p:confirmDialog>
+        </h:form>
+
+        <!-- Diálogo: Novo Funcionário -->
+        <p:dialog header="Novo Funcionário" widgetVar="dlgCreate" modal="true" resizable="false" appendTo="@(body)">
+            <h:form id="CreateForm">
+                <p:growl id="growl" showDetail="true" />
+                <h:panelGrid columns="2" rendered="#{funcionarioController.funcionario != null}">
+                    <p:outputLabel value="Nome:" for="iptNome"/>
+                    <p:inputText id="iptNome" value="#{funcionarioController.funcionario.nome}" required="true" maxlength="50"/>
+
+                    <p:outputLabel value="Nascimento:" for="iptNasc"/>
+                    <p:inputMask id="iptNasc" value="#{funcionarioController.funcionario.dataNascimento}" mask="99/99/9999" required="true">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </p:inputMask>
+
+                    <p:outputLabel value="Email:" for="iptEmail"/>
+                    <p:inputText id="iptEmail" value="#{funcionarioController.funcionario.email}" required="true"/>
+
+                    <p:outputLabel value="Senha:" for="iptSenha"/>
+                    <p:inputText id="iptSenha" value="#{funcionarioController.funcionario.senha}" required="true"/>
+
+                    <p:outputLabel value="Idade:" for="iptIdade"/>
+                    <p:inputNumber id="iptIdade" value="#{funcionarioController.funcionario.idade}" minValue="1"/>
+
+                    <p:outputLabel value="Cidadania:" for="iptCid"/>
+                    <p:selectOneMenu id="iptCid" value="#{funcionarioController.funcionario.cidadania}">
+                        <f:selectItem itemLabel="Selecione..." itemValue=""/>
+                        <f:selectItem itemLabel="Brasileiro" itemValue="brasileiro"/>
+                        <f:selectItem itemLabel="Argentino" itemValue="argentino"/>
+                        <f:selectItem itemLabel="Uruguaio" itemValue="uruguaio"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Cidade:" for="iptCidade"/>
+                    <p:selectOneMenu id="iptCidade" value="#{funcionarioController.funcionario.idCidade}" filter="true" filterMatchMode="contains">
+                        <f:selectItem itemLabel="Selecione..." itemValue="#{null}"/>
+                        <f:selectItems value="#{cidadeController.cidadeAll()}" var="cidade" itemValue="#{cidade}" itemLabel="#{cidade.nome}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Observação:" for="iptObs"/>
+                    <p:inputTextarea id="iptObs" value="#{funcionarioController.funcionario.observacao}" rows="3" cols="40"/>
+                </h:panelGrid>
+
+                <p:commandButton value="Salvar" icon="pi pi-save" actionListener="#{funcionarioController.adicionarFuncionario}"
+                                 update=":frmList, CreateForm" oncomplete="PF('dlgCreate').hide()"/>
+            </h:form>
+        </p:dialog>
+
+        <!-- Diálogo: Editar Funcionário -->
+        <p:dialog header="Editar Funcionário" widgetVar="dlgEdit" modal="true" resizable="false" appendTo="@(body)">
+            <h:form id="formEdit">
+                <p:growl id="growl" showDetail="true" />
+                <h:panelGrid columns="2" rendered="#{funcionarioController.selected != null}">
+                    <p:outputLabel value="ID:"/>
+                    <p:inputText value="#{funcionarioController.selected.id}" disabled="true"/>
+
+                    <p:outputLabel value="Nome:"/>
+                    <p:inputText value="#{funcionarioController.selected.nome}" required="true"/>
+
+                    <p:outputLabel value="Nascimento:"/>
+                    <p:inputMask value="#{funcionarioController.selected.dataNascimento}" mask="99/99/9999">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </p:inputMask>
+
+                    <p:outputLabel value="Email:"/>
+                    <p:inputText value="#{funcionarioController.selected.email}" required="true"/>
+
+                    <p:outputLabel value="Senha:"/>
+                    <p:inputText value="#{funcionarioController.selected.senha}" required="true"/>
+
+                    <p:outputLabel value="Idade:"/>
+                    <p:inputNumber value="#{funcionarioController.selected.idade}" minValue="1"/>
+
+                    <p:outputLabel value="Cidadania:"/>
+                    <p:selectOneMenu value="#{funcionarioController.selected.cidadania}">
+                        <f:selectItem itemLabel="Selecione..." itemValue=""/>
+                        <f:selectItem itemLabel="Brasileiro" itemValue="brasileiro"/>
+                        <f:selectItem itemLabel="Argentino" itemValue="argentino"/>
+                        <f:selectItem itemLabel="Uruguaio" itemValue="uruguaio"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Cidade:"/>
+                    <p:selectOneMenu value="#{funcionarioController.selected.idCidade}" filter="true" filterMatchMode="contains">
+                        <f:selectItem itemLabel="Selecione..." itemValue="#{null}"/>
+                        <f:selectItems value="#{cidadeController.cidadeAll()}" var="cidade" itemValue="#{cidade}" itemLabel="#{cidade.nome}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Observação:"/>
+                    <p:inputTextarea value="#{funcionarioController.selected.observacao}" rows="3" cols="40"/>
+                </h:panelGrid>
+
+                <p:commandButton value="Salvar" icon="pi pi-save" update="@form, :frmList"
+                                 oncomplete="PF('dlgEdit').hide()" action="#{funcionarioController.editarFuncionario}"/>
+            </h:form>
+        </p:dialog>
+
+        <!-- Diálogo: Visualizar -->
+        <p:dialog header="Detalhes do Funcionário" widgetVar="dlgView" modal="true" resizable="false" appendTo="@(body)">
+            <h:form id="formView">
+                <h:panelGrid columns="2" rendered="#{funcionarioController.selected != null}">
+                    <p:outputLabel value="ID:"/>
+                    <p:outputLabel value="#{funcionarioController.selected.id}"/>
+
+                    <p:outputLabel value="Nome:"/>
+                    <p:outputLabel value="#{funcionarioController.selected.nome}"/>
+
+                    <p:outputLabel value="Nascimento:"/>
+                    <p:outputLabel value="#{funcionarioController.selected.dataNascimento}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </p:outputLabel>
+
+                    <p:outputLabel value="Email:"/>
+                    <p:outputLabel value="#{funcionarioController.selected.email}"/>
+
+                    <p:outputLabel value="Idade:"/>
+                    <p:outputLabel value="#{funcionarioController.selected.idade}"/>
+
+                    <p:outputLabel value="Cidadania:"/>
+                    <p:outputLabel value="#{funcionarioController.selected.cidadania}"/>
+
+                    <p:outputLabel value="Cidade:"/>
+                    <p:outputLabel value="#{funcionarioController.selected.idCidade.nome}"/>
+
+                    <p:outputLabel value="Observação:"/>
+                    <p:outputLabel value="#{funcionarioController.selected.observacao}"/>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
+</ui:composition>

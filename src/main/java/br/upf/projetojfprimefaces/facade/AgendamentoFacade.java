@@ -38,12 +38,12 @@ public class AgendamentoFacade extends AbstractFacade<AgendamentoEntity> {
         return entityList;
     }
 
-    public List<AgendamentoEntity> buscarPorPessoaId(Integer pessoaId) {
+    public List<AgendamentoEntity> buscarPorFuncionarioId(Integer funcionarioId) {
         List<AgendamentoEntity> resultado = new ArrayList<>();
         try {
             Query query = getEntityManager()
-                .createQuery("SELECT a FROM AgendamentoEntity a WHERE a.pessoa.id = :pessoaId");
-            query.setParameter("pessoaId", pessoaId);
+                    .createQuery("SELECT a FROM AgendamentoEntity a WHERE a.funcionario.id = :funcionarioId");
+            query.setParameter("funcionarioId", funcionarioId);
             if (!query.getResultList().isEmpty()) {
                 resultado = (List<AgendamentoEntity>) query.getResultList();
             }
@@ -57,7 +57,7 @@ public class AgendamentoFacade extends AbstractFacade<AgendamentoEntity> {
         List<AgendamentoEntity> resultado = new ArrayList<>();
         try {
             Query query = getEntityManager()
-                .createQuery("SELECT a FROM AgendamentoEntity a WHERE a.veiculo.id = :veiculoId");
+                    .createQuery("SELECT a FROM AgendamentoEntity a WHERE a.veiculo.id = :veiculoId");
             query.setParameter("veiculoId", veiculoId);
             if (!query.getResultList().isEmpty()) {
                 resultado = (List<AgendamentoEntity>) query.getResultList();
@@ -67,4 +67,4 @@ public class AgendamentoFacade extends AbstractFacade<AgendamentoEntity> {
         }
         return resultado;
     }
-} 
+}

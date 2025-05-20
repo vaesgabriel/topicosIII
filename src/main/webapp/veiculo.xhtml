@@ -59,15 +59,16 @@
                         <p:commandButton id="btnCreate" value="Incluir Veículo" icon="pi pi-file"
                                          actionListener="#{veiculoController.novo()}"
                                          update=":CreateForm"
+                                         styleClass="botao-verde"
                                          onclick="PF('dlgCreate').show()"
                                          style="margin-right:5px;" />
 
-                        <p:commandButton id="btnEdit" icon="pi pi-pencil" value="Editar Veículo"
+                        <p:commandButton id="btnEdit" styleClass="botao-laranja" icon="pi pi-pencil" value="Editar Veículo"
                                          update="formEdit" oncomplete="PF('dlgEdit').show()"
                                          disabled="#{empty veiculoController.veiculo}"
                                          style="margin-right:5px;" />
 
-                        <p:commandButton id="btnDelete" icon="pi pi-trash" value="Excluir Veículo"
+                        <p:commandButton id="btnDelete" styleClass="botao-vermelho" icon="pi pi-trash" value="Excluir Veículo"
                                          actionListener="#{veiculoController.excluir(veiculoController.veiculo)}"
                                          update="frmList"
                                          disabled="#{empty veiculoController.veiculo}"
@@ -94,7 +95,12 @@
                 <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
             </p:confirmDialog>
         </h:form>
-
+        <h:form>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes confirmar-vermelho" icon="pi pi-check" />
+                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no confirmar-verde" icon="pi pi-times" />
+            </p:confirmDialog>
+        </h:form>
         <!-- Diálogo de Inclusão -->
         <p:dialog header="Novo Veículo" widgetVar="dlgCreate" height="300" width="500" modal="true">
             <h:form id="CreateForm">
@@ -168,5 +174,5 @@
             </h:form>
         </p:dialog>
 
-    </ui:define>
+    </ui:define>    
 </ui:composition>

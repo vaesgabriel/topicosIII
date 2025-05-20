@@ -51,18 +51,18 @@
 
                         <f:facet name="footer">
                             <!--Botão utilizado para abrir a modal de criação -->
-                            <p:commandButton id="btnCreate" value="Incluir Cidade"  icon="pi pi-file" 
+                            <p:commandButton id="btnCreate" styleClass="botao-verde" value="Incluir Cidade"  icon="pi pi-file" 
                                              actionListener="#{cidadeController.prepareAdicionar()}"
                                              update=":CreateForm"
                                              oncomplete="PF('dlgCreate').show()"/>  
 
                             <!--Botão utilizado para abrir a modal de edição -->
-                            <p:commandButton id="btnEdit" icon="pi pi-user-edit"  value="Editar Cidade" 
+                            <p:commandButton id="btnEdit" styleClass="botao-laranja" icon="pi pi-user-edit"  value="Editar Cidade" 
                                              update=":EditForm" oncomplete="PF('dlgEdit').show()" 
                                              disabled="#{empty cidadeController.selected}"/>
 
                             <!--Botão utilizado para excluir o registro selecionado-->                            
-                            <p:commandButton id="btnDelete" icon="pi pi-trash"  value="Excluir Cidade" 
+                            <p:commandButton id="btnDelete" styleClass="botao-vermelho" icon="pi pi-trash"  value="Excluir Cidade" 
                                              actionListener="#{cidadeController.deletar()}" update=":frmList" 
                                              disabled="#{empty cidadeController.selected}">
                                 <p:confirm header="Confirmar Exclusão" message="Você confirma exclusão do registro?" 
@@ -110,6 +110,12 @@
                                      onclick="dlgCreate.hide()"/>
                 </h:panelGroup>
             </h:form>
+            <h:form>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes confirmar-vermelho" icon="pi pi-check" />
+                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no confirmar-verde" icon="pi pi-times" />
+                </p:confirmDialog>
+            </h:form>
         </p:dialog>
 
         <!--Inicio do diálogo de edição-->
@@ -127,7 +133,7 @@
                         <p:inputText id="iptUfenum" size="10" label="UF" required="true" 
                                      requiredMessage="O atributo uf é obrigatório"
                                      value="#{cidadeController.selected.ufenum}" maxlength="2" />   
-                        
+
                     </h:panelGrid >
                     <p:commandButton actionListener="#{cidadeController.editar()}" 
                                      value="Salvar" icon="pi pi-save"

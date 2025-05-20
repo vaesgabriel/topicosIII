@@ -20,8 +20,8 @@ public class AgendamentoEntity implements Serializable {
     private Integer id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "id_pessoa", referencedColumnName = "id")
-    private PessoaEntity pessoa;
+    @JoinColumn(name = "id_funcionario", referencedColumnName = "id") // Corrigido
+    private FuncionarioEntity funcionario; // Corrigido
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "id_veiculo", referencedColumnName = "id")
@@ -47,6 +47,7 @@ public class AgendamentoEntity implements Serializable {
     @Column(name = "datahorareg")
     private Date datahorareg;
 
+    // Getters e Setters
     public Integer getId() {
         return id;
     }
@@ -55,12 +56,12 @@ public class AgendamentoEntity implements Serializable {
         this.id = id;
     }
 
-    public PessoaEntity getPessoa() {
-        return pessoa;
+    public FuncionarioEntity getFuncionario() {
+        return funcionario;
     }
 
-    public void setPessoa(PessoaEntity pessoa) {
-        this.pessoa = pessoa;
+    public void setFuncionario(FuncionarioEntity funcionario) {
+        this.funcionario = funcionario;
     }
 
     public VeiculoEntity getVeiculo() {

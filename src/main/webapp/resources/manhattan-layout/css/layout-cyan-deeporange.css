@@ -4911,5 +4911,33 @@ p:last-child {
     display: none !important;
 }
 
+.botao-verde {
+    background-color: #4CAF50 !important;
+    border-color: #388E3C !important;
+    color: white !important;
+}
 
+.botao-laranja {
+    background-color: #FB8C00 !important; /* Laranja escuro */
+    border-color: #EF6C00 !important;
+    color: white !important;
+}
+
+.botao-vermelho {
+    background-color: #E53935 !important; /* Vermelho */
+    border-color: #C62828 !important;
+    color: white !important;
+}
+
+.confirmar-vermelho {
+    background-color: #E53935 !important;
+    border-color: #C62828 !important;
+    color: white !important;
+}
+
+.confirmar-verde {
+    background-color: #4CAF50 !important;
+    border-color: #388E3C !important;
+    color: white !important;
+}
 /* Add your customizations of the layout styles here */

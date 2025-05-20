@@ -1,6 +1,6 @@
 package br.upf.projetojfprimefaces.controller;
 
-import br.upf.projetojfprimefaces.entity.PessoaEntity;
+import br.upf.projetojfprimefaces.entity.FuncionarioEntity;
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.EJB;
 import jakarta.inject.Named;
@@ -12,55 +12,52 @@ import java.io.Serializable;
 @Named(value = "loginController")
 @SessionScoped
 public class LoginController implements Serializable {
-    
-    @EJB
-    private br.upf.projetojfprimefaces.facade.PessoaFacade ejbFacade;
 
+    @EJB
+    private br.upf.projetojfprimefaces.facade.FuncionarioFacade ejbFacade;
+
+    // Objeto que representa o funcionário logando no sistema
+    private FuncionarioEntity funcionario;
 
     public LoginController() {
     }
 
-    //objeto que representa uma pessoa
-    private PessoaEntity pessoa;
-
-    public void prepareAutenticarPessoa() {
-        pessoa = new PessoaEntity();
-    }
-
     /**
-     * Método utilizado para inicializar métodos ao instanciar a classe...
+     * Método utilizado para inicializar a entidade após a construção do bean
      */
     @PostConstruct
     public void init() {
-        prepareAutenticarPessoa();
+        funcionario = new FuncionarioEntity();
     }
 
     /**
-     * Método utilizado para validar login e senha.   
-     * @return
+     * Método utilizado para validar login (email e senha)
+     *
+     * @return página de destino se sucesso, ou null se falha
      */
     public String validarLogin() {
-        PessoaEntity pessoaDB = ejbFacade.buscarPorEmail(pessoa.getEmail(), pessoa.getSenha());
-        if ((pessoaDB != null && pessoaDB.getId() != null)) {
-            //caso as credenciais foram válidas, então direciona para página index
-            return "/pessoa.xhtml?faces-redirect=true";
+        String email = funcionario.getEmail().trim();
+        String senha = funcionario.getSenha().trim();
+
+        FuncionarioEntity funcionarioDB = ejbFacade.buscarPorEmail(email, senha);
+
+        if (funcionarioDB != null && funcionarioDB.getId() != null) {
+            return "/funcionario.xhtml?faces-redirect=true";
         } else {
-            //senão, exibe uma mensagem de falha...
             FacesMessage fm = new FacesMessage(
                     FacesMessage.SEVERITY_ERROR,
                     "Falha no Login!",
-                    "Email ou senha incorreto!");
+                    "Email ou senha incorretos!");
             FacesContext.getCurrentInstance().addMessage(null, fm);
             return null;
         }
     }
 
-    public PessoaEntity getPessoa() {
-        return pessoa;
+    public FuncionarioEntity getFuncionario() {
+        return funcionario;
     }
 
-    public void setPessoa(PessoaEntity pessoa) {
-        this.pessoa = pessoa;
+    public void setFuncionario(FuncionarioEntity funcionario) {
+        this.funcionario = funcionario;
     }
-
 }

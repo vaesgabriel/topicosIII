@@ -30,14 +30,8 @@
                             <h:outputText value="#{item.id}" />
                         </p:column>
 
-                        <p:column headerText="Registro" sortBy="#{item.datahorareg}" filterBy="#{item.datahorareg}" width="8%">
-                            <h:outputText value="#{item.datahorareg}">
-                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Sao_Paulo" />
-                            </h:outputText>
-                        </p:column>
-
-                        <p:column headerText="Pessoa" sortBy="#{item.pessoa.nome}" filterBy="#{item.pessoa.nome}" filterMatchMode="contains" width="15%">
-                            <h:outputText value="#{item.pessoa.nome}" />
+                        <p:column headerText="Funcionario" sortBy="#{item.funcionario.nome}" filterBy="#{item.funcionario.nome}" filterMatchMode="contains" width="15%">
+                            <h:outputText value="#{item.funcionario.nome}" />
                         </p:column>
 
                         <p:column headerText="Veículo" sortBy="#{item.veiculo.modelo}" filterBy="#{item.veiculo.modelo}" filterMatchMode="contains" width="15%">
@@ -59,18 +53,18 @@
                         </p:column>
 
                         <f:facet name="footer">
-                            <p:commandButton id="btnCreate" value="Incluir Agendamento" icon="pi pi-file"
+                            <p:commandButton id="btnCreate" styleClass="botao-verde" value="Incluir Agendamento" icon="pi pi-file"
                                              actionListener="#{agendamentoController.prepareAdicionar()}"
                                              update=":CreateForm"
                                              onclick="PF('dlgCreate').show()"
                                              style="margin-right:10px" />
 
-                            <p:commandButton id="btnEdit" icon="pi pi-user-edit" value="Editar Agendamento"
+                            <p:commandButton id="btnEdit" styleClass="botao-laranja" icon="pi pi-user-edit" value="Editar Agendamento"
                                              update="formEdit" oncomplete="PF('dlgEdit').show()"
                                              disabled="#{empty agendamentoController.selected}"
                                              style="margin-right:10px" />
 
-                            <p:commandButton id="btnDelete" icon="pi pi-trash" value="Excluir Agendamento"
+                            <p:commandButton id="btnDelete" styleClass="botao-vermelho" icon="pi pi-trash" value="Excluir Agendamento"
                                              actionListener="#{agendamentoController.deletarAgendamento()}" update="frmList"
                                              disabled="#{empty agendamentoController.selected}"
                                              style="margin-right:10px">
@@ -98,12 +92,12 @@
             <h:form id="CreateForm">
                 <p:growl id="growl" showDetail="true" />
                 <h:panelGrid columns="2">
-                    <p:outputLabel value="Pessoa:" />
-                    <p:selectOneMenu value="#{agendamentoController.agendamento.pessoa}"
+                    <p:outputLabel value="Funcionario:" />
+                    <p:selectOneMenu value="#{agendamentoController.agendamento.funcionario}"
                                      converter="omnifaces.SelectItemsConverter"
                                      filter="true" filterMatchMode="contains">
-                        <f:selectItem itemLabel="Selecione uma pessoa..." itemValue="" />
-                        <f:selectItems value="#{pessoaController.pessoaList}" var="p"
+                        <f:selectItem itemLabel="Selecione um funcionario..." itemValue="" />
+                        <f:selectItems value="#{funcionarioController.funcionarioList}" var="p"
                                        itemValue="#{p}" itemLabel="#{p.nome}" />
                     </p:selectOneMenu>
 
@@ -144,8 +138,8 @@
                     <p:outputLabel value="ID:" />
                     <p:inputText value="#{agendamentoController.selected.id}" disabled="true" />
 
-                    <p:outputLabel value="Pessoa:" />
-                    <p:outputLabel value="#{agendamentoController.selected.pessoa.nome}" />
+                    <p:outputLabel value="Funcionario:" />
+                    <p:outputLabel value="#{agendamentoController.selected.funcionario.nome}" />
 
                     <p:outputLabel value="Veículo:" />
                     <p:outputLabel value="#{agendamentoController.selected.veiculo.modelo}" />
@@ -166,6 +160,13 @@
                                  update="@form, :frmList"
                                  onclick="dlgEdit.hide()" />
             </h:form>
+            <h:form>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes confirmar-vermelho" icon="pi pi-check" />
+                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no confirmar-verde" icon="pi pi-times" />
+                </p:confirmDialog>
+            </h:form>
+
         </p:dialog>
 
         <!-- Diálogo: Visualizar -->
@@ -180,8 +181,8 @@
                         <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Sao_Paulo" />
                     </p:outputLabel>
 
-                    <p:outputLabel value="Pessoa:" />
-                    <p:outputLabel value="#{agendamentoController.selected.pessoa.nome}" />
+                    <p:outputLabel value="Funcionario:" />
+                    <p:outputLabel value="#{agendamentoController.selected.funcionario.nome}" />
 
                     <p:outputLabel value="Veículo:" />
                     <p:outputLabel value="#{agendamentoController.selected.veiculo.modelo}" />
