@@ -4884,4 +4884,21 @@ p:last-child {
   background-color: #ed3c76;
 }
 
+
+.layout-menu .active-menuitem > a {
+    border-left: 4px solid #FB8C00 !important; /* Laranja escuro */
+    background-color: rgba(251, 140, 0, 0.1); /* Opcional: leve fundo laranja */
+    color: #FB8C00 !important; /* Ícone/texto do item ativo em laranja */
+}
+
+.layout-sidebar-logo {
+    background: linear-gradient(to right, #FFA726, #FB8C00) !important; /* Laranja degradê */
+}
+
+.layout-menu .active-menuitem > a .pi {
+    background-color: #FB8C00 !important; /* Laranja escuro */
+    border-radius: 4px; /* Arredonda as bordas, opcional */
+    color: white !important; /* Deixa o ícone branco */
+}
+
 /* Add your customizations of the layout styles here */
