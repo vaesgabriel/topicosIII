@@ -4901,4 +4901,15 @@ p:last-child {
     color: white !important; /* Deixa o ícone branco */
 }
 
+.layout-topbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#layout-config-button {
+    display: none !important;
+}
+
+
 /* Add your customizations of the layout styles here */

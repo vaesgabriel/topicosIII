@@ -1,15 +1,12 @@
-br\upf\projetojfprimefaces\controller\CidadeController$1.class
 br\upf\projetojfprimefaces\controller\PessoaController.class
 br\upf\projetojfprimefaces\entity\CidadeEntity.class
 br\upf\projetojfprimefaces\facade\AgendamentoFacade.class
-br\upf\projetojfprimefaces\controller\AgendamentoController$1.class
 br\upf\projetojfprimefaces\controller\CidadeController$PersistAction.class
 br\upf\projetojfprimefaces\controller\VeiculoController.class
 br\upf\projetojfprimefaces\entity\PessoaEntity.class
 br\upf\projetojfprimefaces\controller\CidadeController.class
 br\upf\projetojfprimefaces\entity\AgendamentoEntity.class
 br\upf\projetojfprimefaces\facade\VeiculoFacade.class
-br\upf\projetojfprimefaces\controller\PessoaController$1.class
 br\upf\projetojfprimefaces\entity\VeiculoEntity.class
 br\upf\projetojfprimefaces\controller\CidadeController$CidadeControllerConverter.class
 br\upf\projetojfprimefaces\JakartaRestConfiguration.class

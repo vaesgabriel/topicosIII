@@ -9,39 +9,41 @@
     </a>
 
     <div class="layout-config">
-        <h5>Menu Type</h5>
+        <h5>Tipo de Menu</h5>
         <h:form id="config-form">
-            <p:selectOneRadio value="#{guestPreferences.layoutMode}" layout="pageDirection" onchange="PrimeFaces.ManhattanConfigurator.changeMenuMode(event.target.value)">
-                <f:selectItem itemLabel="Static" itemValue="layout-static"/>
-                <f:selectItem itemLabel="Overlay" itemValue="layout-overlay"/>
+            <p:selectOneRadio value="#{guestPreferences.layoutMode}" layout="pageDirection"
+                              onchange="PrimeFaces.ManhattanConfigurator.changeMenuMode(event.target.value)">
+                <f:selectItem itemLabel="Estático" itemValue="layout-static"/>
+                <f:selectItem itemLabel="Sobreposto" itemValue="layout-overlay"/>
                 <f:selectItem itemLabel="Horizontal" itemValue="layout-horizontal"/>
-                <f:selectItem itemLabel="Slim" itemValue="layout-slim"/>
-                <f:selectItem itemLabel="Toggle" itemValue="layout-toggle"/>
+                <f:selectItem itemLabel="Compacto" itemValue="layout-slim"/>
+                <f:selectItem itemLabel="Alternável" itemValue="layout-toggle"/>
                 <p:ajax update="config-form" />
             </p:selectOneRadio>
 
             <hr/>
 
-            <h5>Menu Color</h5>
-            <p:selectOneRadio value="#{guestPreferences.menuColor}" layout="pageDirection" onchange="PrimeFaces.ManhattanConfigurator.changeMenuColor(event.target.value)" >
-                <f:selectItem itemLabel="Light" itemValue="light"/>
-                <f:selectItem itemLabel="Dark" itemValue="dark"/>
+            <h5>Cor do Menu</h5>
+            <p:selectOneRadio value="#{guestPreferences.menuColor}" layout="pageDirection"
+                              onchange="PrimeFaces.ManhattanConfigurator.changeMenuColor(event.target.value)">
+                <f:selectItem itemLabel="Claro" itemValue="light"/>
+                <f:selectItem itemLabel="Escuro" itemValue="dark"/>
                 <p:ajax update="config-form" />
             </p:selectOneRadio>
 
             <hr/>
 
-            <h5>Input Style</h5>
+            <h5>Estilo dos Campos</h5>
             <p:selectOneRadio value="#{guestPreferences.inputStyle}" layout="pageDirection"
                               onchange="PrimeFaces.ManhattanConfigurator.updateInputStyle(event.target.value)">
-                <f:selectItem itemLabel="Outlined" itemValue="outlined"/>
-                <f:selectItem itemLabel="Filled" itemValue="filled"/>
+                <f:selectItem itemLabel="Contornado" itemValue="outlined"/>
+                <f:selectItem itemLabel="Preenchido" itemValue="filled"/>
                 <p:ajax/>
             </p:selectOneRadio>
 
             <hr/>
 
-            <h5>Themes</h5>
+            <h5>Temas</h5>
             <div class="layout-themes">
                 <ui:repeat value="#{guestPreferences.themes}" var="theme">
                     <div>
