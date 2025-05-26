@@ -34,6 +34,10 @@
                             <h:outputText value="#{item.funcionario.nome}" />
                         </p:column>
 
+                        <p:column headerText="Cliente" sortBy="#{item.cliente.nome}" filterBy="#{item.cliente.nome}" filterMatchMode="contains" width="15%">
+                            <h:outputText value="#{item.cliente.nome}" />
+                        </p:column>
+
                         <p:column headerText="Veículo" sortBy="#{item.veiculo.modelo}" filterBy="#{item.veiculo.modelo}" filterMatchMode="contains" width="15%">
                             <h:outputText value="#{item.veiculo.modelo}" />
                         </p:column>
@@ -101,6 +105,15 @@
                                        itemValue="#{p}" itemLabel="#{p.nome}" />
                     </p:selectOneMenu>
 
+                    <p:outputLabel value="Cliente:" />
+                    <p:selectOneMenu value="#{agendamentoController.agendamento.cliente}"
+                                     converter="omnifaces.SelectItemsConverter"
+                                     filter="true" filterMatchMode="contains">
+                        <f:selectItem itemLabel="Selecione um cliente..." itemValue="" />
+                        <f:selectItems value="#{clienteController.clienteList}" var="p"
+                                       itemValue="#{p}" itemLabel="#{p.nome}" />
+                    </p:selectOneMenu>
+
                     <p:outputLabel value="Veículo:" />
                     <p:selectOneMenu value="#{agendamentoController.agendamento.veiculo}"
                                      converter="omnifaces.SelectItemsConverter"
@@ -140,6 +153,9 @@
 
                     <p:outputLabel value="Funcionario:" />
                     <p:outputLabel value="#{agendamentoController.selected.funcionario.nome}" />
+
+                    <p:outputLabel value="Cliente:" />
+                    <p:outputLabel value="#{agendamentoController.selected.cliente.nome}" />
 
                     <p:outputLabel value="Veículo:" />
                     <p:outputLabel value="#{agendamentoController.selected.veiculo.modelo}" />
@@ -183,6 +199,9 @@
 
                     <p:outputLabel value="Funcionario:" />
                     <p:outputLabel value="#{agendamentoController.selected.funcionario.nome}" />
+
+                    <p:outputLabel value="Cliente:" />
+                    <p:outputLabel value="#{agendamentoController.selected.cliente.nome}" />
 
                     <p:outputLabel value="Veículo:" />
                     <p:outputLabel value="#{agendamentoController.selected.veiculo.modelo}" />

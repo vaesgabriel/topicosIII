@@ -23,6 +23,10 @@ public class AgendamentoEntity implements Serializable {
     @JoinColumn(name = "id_funcionario", referencedColumnName = "id") // Corrigido
     private FuncionarioEntity funcionario; // Corrigido
 
+    @ManyToOne
+    @JoinColumn(name = "id_cliente") // o nome da coluna na tabela agendamento
+    private ClienteEntity cliente;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "id_veiculo", referencedColumnName = "id")
     private VeiculoEntity veiculo;
@@ -62,6 +66,14 @@ public class AgendamentoEntity implements Serializable {
 
     public void setFuncionario(FuncionarioEntity funcionario) {
         this.funcionario = funcionario;
+    }
+
+    public ClienteEntity getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(ClienteEntity cliente) {
+        this.cliente = cliente;
     }
 
     public VeiculoEntity getVeiculo() {
@@ -111,8 +123,12 @@ public class AgendamentoEntity implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
         AgendamentoEntity other = (AgendamentoEntity) obj;
         return Objects.equals(id, other.id);
     }

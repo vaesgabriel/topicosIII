@@ -78,6 +78,10 @@ public class AgendamentoController implements Serializable {
         return ejbFacade.buscarPorFuncionarioId(funcionarioId);
     }
 
+    public List<AgendamentoEntity> buscarPorCliente(Integer clienteId) {
+        return ejbFacade.buscarPorClienteId(clienteId);
+    }
+
     private void persist(PersistAction persistAction, String successMessage) {
         try {
             if (persistAction != null) {

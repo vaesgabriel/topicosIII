@@ -1,0 +1,180 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        <h:outputText value="Cliente"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="frmList">
+            <p:growl id="growl" showDetail="true" />
+            <h:panelGroup id="pngList">
+                <p:dataTable id="datalist" value="#{clienteController.clienteList}" var="item"
+                             selectionMode="single" selection="#{clienteController.selected}"
+                             widgetVar="datalistClienteWidgetVar"
+                             rowKey="#{item.id}"
+                             paginator="true"
+                             rows="5"
+                             rowsPerPageTemplate="5,10,50,100"
+                             emptyMessage="Nenhum cliente cadastrado...">
+
+                    <p:ajax event="rowSelect" update="btnEdit btnDelete btnView"/>
+                    <p:ajax event="rowUnselect" update="btnEdit btnDelete btnView"/>
+
+                    <p:column width="4%" sortBy="#{item.id}" filterBy="#{item.id}">
+                        <f:facet name="header"><h:outputText value="ID"/></f:facet>
+                        <h:outputText value="#{item.id}"/>
+                    </p:column>
+
+                    <p:column width="15%" sortBy="#{item.nome}" filterBy="#{item.nome}">
+                        <f:facet name="header"><h:outputText value="Nome"/></f:facet>
+                        <h:outputText value="#{item.nome}"/>
+                    </p:column>
+
+                    <p:column width="20%" sortBy="#{item.email}" filterBy="#{item.email}">
+                        <f:facet name="header"><h:outputText value="Email"/></f:facet>
+                        <h:outputText value="#{item.email}"/>
+                    </p:column>
+
+                    <p:column width="15%" sortBy="#{item.telefone}" filterBy="#{item.telefone}">
+                        <f:facet name="header"><h:outputText value="Telefone"/></f:facet>
+                        <h:outputText value="#{item.telefone}"/>
+                    </p:column>
+
+                    <p:column width="15%" sortBy="#{item.cpf}" filterBy="#{item.cpf}">
+                        <f:facet name="header"><h:outputText value="CPF"/></f:facet>
+                        <h:outputText value="#{item.cpf}"/>
+                    </p:column>
+
+                    <p:column width="15%" sortBy="#{item.cnh}" filterBy="#{item.cnh}">
+                        <f:facet name="header"><h:outputText value="CNH"/></f:facet>
+                        <h:outputText value="#{item.cnh}"/>
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <p:commandButton id="btnCreate" value="Incluir Cliente" icon="pi pi-file"
+                                         action="#{clienteController.prepareAdicionar}"
+                                         update=":CreateForm"
+                                         oncomplete="PF('dlgCreate').show()"
+                                         styleClass="botao-verde"
+                                         style="margin-right: 8px;" />
+
+                        <p:commandButton id="btnEdit" value="Editar Cliente" icon="pi pi-user-edit"
+                                         update="formEdit"
+                                         oncomplete="PF('dlgEdit').show()"
+                                         disabled="#{empty clienteController.selected}"
+                                         styleClass="botao-laranja"
+                                         style="margin-right: 8px;" />
+
+                        <p:commandButton id="btnDelete" value="Excluir Cliente" icon="pi pi-trash"
+                                         actionListener="#{clienteController.deletarCliente}"
+                                         update=":frmList"
+                                         disabled="#{empty clienteController.selected}"
+                                         styleClass="botao-vermelho"
+                                         style="margin-right: 8px;">
+                            <p:confirm header="Confirmar Exclusão" message="Você confirma exclusão do registro?" icon="ui-icon-alert" />
+                        </p:commandButton>
+
+                        <p:commandButton id="btnView" value="Detalhes do Cliente" icon="pi pi-eye"
+                                         update="formView"
+                                         oncomplete="PF('dlgView').show()"
+                                         disabled="#{empty clienteController.selected}"
+                                         styleClass="botao-azul"/>
+                    </f:facet>
+                </p:dataTable>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+                </p:confirmDialog>
+            </h:panelGroup>
+        </h:form>
+
+        <!-- Diálogo: Novo Cliente -->
+        <p:dialog header="Novo Cliente" widgetVar="dlgCreate" modal="true" resizable="false" appendTo="@(body)">
+            <h:form id="CreateForm">
+                <p:growl id="growl" showDetail="true" />
+                <h:panelGrid columns="2" rendered="#{clienteController.cliente != null}">
+                    <p:outputLabel value="Nome:" for="iptNome"/>
+                    <p:inputText id="iptNome" value="#{clienteController.cliente.nome}" required="true" maxlength="50"/>
+
+                    <p:outputLabel value="Email:" for="iptEmail"/>
+                    <p:inputText id="iptEmail" value="#{clienteController.cliente.email}" required="true" />
+
+                    <p:outputLabel value="Telefone:" for="iptTelefone"/>
+                    <p:inputText id="iptTelefone" value="#{clienteController.cliente.telefone}" required="true" maxlength="15" />
+
+                    <p:outputLabel value="CPF:" for="iptCpf"/>
+                    <p:inputText id="iptCpf" value="#{clienteController.cliente.cpf}" required="true" maxlength="14" />
+
+                    <p:outputLabel value="CNH:" for="iptCnh"/>
+                    <p:inputText id="iptCnh" value="#{clienteController.cliente.cnh}" maxlength="20" />
+
+                </h:panelGrid>
+
+                <p:commandButton value="Salvar" icon="pi pi-save" actionListener="#{clienteController.adicionarCliente}"
+                                 update=":frmList, CreateForm" oncomplete="PF('dlgCreate').hide()"/>
+            </h:form>
+        </p:dialog>
+
+        <!-- Diálogo: Editar Cliente -->
+        <p:dialog header="Editar Cliente" widgetVar="dlgEdit" modal="true" resizable="false" appendTo="@(body)">
+            <h:form id="formEdit">
+                <p:growl id="growl" showDetail="true" />
+                <h:panelGrid columns="2" rendered="#{clienteController.selected != null}">
+                    <p:outputLabel value="ID:"/>
+                    <p:inputText value="#{clienteController.selected.id}" disabled="true"/>
+
+                    <p:outputLabel value="Nome:"/>
+                    <p:inputText value="#{clienteController.selected.nome}" required="true" maxlength="50"/>
+
+                    <p:outputLabel value="Email:"/>
+                    <p:inputText value="#{clienteController.selected.email}" required="true"/>
+
+                    <p:outputLabel value="Telefone:"/>
+                    <p:inputText value="#{clienteController.selected.telefone}" required="true" maxlength="15"/>
+
+                    <p:outputLabel value="CPF:"/>
+                    <p:inputText value="#{clienteController.selected.cpf}" required="true" maxlength="14"/>
+
+                    <p:outputLabel value="CNH:"/>
+                    <p:inputText value="#{clienteController.selected.cnh}" maxlength="20"/>
+
+                </h:panelGrid>
+
+                <p:commandButton value="Salvar" icon="pi pi-save" update="@form, :frmList"
+                                 oncomplete="PF('dlgEdit').hide()" action="#{clienteController.editarCliente}"/>
+            </h:form>
+        </p:dialog>
+
+        <!-- Diálogo: Visualizar Cliente -->
+        <p:dialog header="Detalhes do Cliente" widgetVar="dlgView" modal="true" resizable="false" appendTo="@(body)">
+            <h:form id="formView">
+                <h:panelGrid columns="2" rendered="#{clienteController.selected != null}">
+                    <p:outputLabel value="ID:"/>
+                    <p:outputLabel value="#{clienteController.selected.id}"/>
+
+                    <p:outputLabel value="Nome:"/>
+                    <p:outputLabel value="#{clienteController.selected.nome}"/>
+
+                    <p:outputLabel value="Email:"/>
+                    <p:outputLabel value="#{clienteController.selected.email}"/>
+
+                    <p:outputLabel value="Telefone:"/>
+                    <p:outputLabel value="#{clienteController.selected.telefone}"/>
+
+                    <p:outputLabel value="CPF:"/>
+                    <p:outputLabel value="#{clienteController.selected.cpf}"/>
+
+                    <p:outputLabel value="CNH:"/>
+                    <p:outputLabel value="#{clienteController.selected.cnh}"/>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
+</ui:composition>

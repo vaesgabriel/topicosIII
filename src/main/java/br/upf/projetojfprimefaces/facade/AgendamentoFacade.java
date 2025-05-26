@@ -67,4 +67,8 @@ public class AgendamentoFacade extends AbstractFacade<AgendamentoEntity> {
         }
         return resultado;
     }
+
+    public List<AgendamentoEntity> buscarPorClienteId(Integer clienteId) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
