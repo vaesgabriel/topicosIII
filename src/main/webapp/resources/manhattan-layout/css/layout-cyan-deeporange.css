@@ -1817,9 +1817,14 @@ a {
   margin-bottom: 0;
 }
 .login-body .login-panel .login-image {
-  height: 100%;
+  display: block;
+  margin: 150px auto 50px auto;  
+  max-width: 350px;
   width: 100%;
+  height: auto;
+  object-fit: contain;
 }
+
 .login-body .login-panel .input-wrapper {
   position: relative;
 }
